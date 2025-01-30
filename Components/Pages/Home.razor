@@ -1,6 +1,14 @@
 ﻿@page "/"
+@using System.Diagnostics
 @inject MonkeyService monkeyService
+@inject IDialogService DialogService
 
+
+<MudButton Variant="Variant.Filled" 
+		   @onclick="CreateNewMonkey"
+           Style="@($"color:{Colors.Shades.White}; " +
+                    $"background:{Colors.Green.Darken4};")">Create new monkey</MudButton>
+	
 <MudList T="Monkey">
 	@foreach (var monkey in monkeys)
 	{
@@ -14,6 +22,7 @@
 	}
 </MudList>
 
+
 @code {
 	
 	private List<Monkey>? monkeys = [];
@@ -22,6 +31,23 @@
 	protected override async Task OnInitializedAsync()
 	{
 		monkeys = await monkeyService.GetMonkeys();
+	}
+
+	private async Task CreateNewMonkey()
+	{
+		var options = new DialogOptions
+		{
+			CloseOnEscapeKey = true, 
+			CloseButton = true
+		};
+
+		var dialog = await DialogService.ShowAsync<Dialog>("Simple Dialog", options);
+		var result = await dialog.Result;
+
+		if (result != null && !result.Canceled & result.Data != null && result.Data is Monkey monkey)
+		{
+			monkeys?.Add(monkey);
+		}
 	}
 
 }

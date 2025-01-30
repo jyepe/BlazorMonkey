@@ -1,0 +1,34 @@
+﻿@* <MudDialogProvider CloseButton="true" /> *@
+
+<MudDialog>
+	<DialogContent>
+		<MudStack Spacing="5">
+			<MudTextField Label="Name" Variant="Variant.Text" @bind-Value="@Monkey.Name"></MudTextField>
+			<MudTextField Label="Details" Variant="Variant.Text" @bind-Value="@Monkey.Details"></MudTextField>
+			<MudTextField Label="Location" Variant="Variant.Text" @bind-Value="@Monkey.Location"></MudTextField>
+			<MudTextField Label="Image" Variant="Variant.Text" @bind-Value="@Monkey.Image"></MudTextField>
+			
+			<MudNumericField @bind-Value="@Monkey.Population" Label="Population" Variant="Variant.Text" Min="0" Max="10" />
+			<MudNumericField @bind-Value="@Monkey.Latitude" Label="Latitude" Variant="Variant.Text" Min="0" Max="10" />
+			<MudNumericField @bind-Value="@Monkey.Longitude" Label="Longitude" Variant="Variant.Text" Min="0" Max="10" />
+		</MudStack>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+		<MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+	</DialogActions>
+</MudDialog>
+
+
+
+@code {
+	[CascadingParameter]
+	private IMudDialogInstance MudDialog { get; set; }
+
+	private void Submit() => MudDialog.Close(Monkey);
+
+	private void Cancel() => MudDialog.Cancel();
+
+	[Parameter] 
+    public Monkey Monkey { get; set; } = new();
+}
