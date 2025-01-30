@@ -1,5 +1,27 @@
 ﻿@page "/"
+@inject MonkeyService monkeyService
 
-<h1>Hello, world!</h1>
+<MudList T="Monkey">
+	@foreach (var monkey in monkeys)
+	{
+		<MudListItem Text="@monkey.Name">
+			<AvatarContent>
+				<MudAvatar>
+					<MudImage Src="@monkey.Image"/>
+				</MudAvatar>
+			</AvatarContent>
+		</MudListItem>
+	}
+</MudList>
 
-Welcome to your new app.
+@code {
+	
+	private List<Monkey>? monkeys = [];
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		monkeys = await monkeyService.GetMonkeys();
+	}
+
+}

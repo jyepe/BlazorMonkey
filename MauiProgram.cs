@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace BlazorMonkey
+﻿namespace BlazorMonkey
 {
     public static class MauiProgram
     {
@@ -15,12 +13,14 @@ namespace BlazorMonkey
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddMudServices();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
+            builder.Services.AddSingleton<MonkeyService>();
             return builder.Build();
         }
     }
