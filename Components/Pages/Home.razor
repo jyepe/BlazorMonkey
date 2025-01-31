@@ -2,6 +2,7 @@
 @using System.Diagnostics
 @inject MonkeyService monkeyService
 @inject IDialogService DialogService
+@inject NavigationManager NavManager
 
 
 <MudButton Variant="Variant.Filled" 
@@ -12,7 +13,7 @@
 <MudList T="Monkey">
 	@foreach (var monkey in monkeys)
 	{
-		<MudListItem Text="@monkey.Name">
+		<MudListItem Text="@monkey.Name" @onclick="() => GoToDetails(monkey)">
 			<AvatarContent>
 				<MudAvatar>
 					<MudImage Src="@monkey.Image"/>
@@ -48,6 +49,11 @@
 		{
 			monkeys?.Add(monkey);
 		}
+	}
+
+	private void GoToDetails(Monkey monkey)
+	{
+		NavManager.NavigateTo($"details/{monkey.Name}");
 	}
 
 }

@@ -1,0 +1,68 @@
+﻿@page "/details/{name}"
+@using BlazorMonkey.MauiPages
+@inject NavigationManager NavManager
+@inject MonkeyService monkeyService
+
+<MudStack Spacing="12">
+	<MudImage Height="@ImageHeight" Src="@Monkey.Image" ObjectFit="ObjectFit.Contain">
+
+	</MudImage>
+
+	<MudPaper Elevation="10" Class="ml-4 mr-4">
+
+		<MudText Align="Align.Center" Class="ml-3" Typo="Typo.h4">@Monkey.Name</MudText>
+
+		<MudDivider />
+
+		<MudText Class="pa-5">@Monkey.Details</MudText>
+	</MudPaper>
+
+	<MudStack Spacing="5" Class="ml-4 mr-4 mb-4">
+
+		<MudButton Class="rounded-pill scalable-button" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Map" Variant="Variant.Filled">Show on map</MudButton>
+		<MudButton OnClick="AddRating" Class="rounded-pill scalable-button" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Star" Variant="Variant.Filled">Rate this monkey</MudButton>
+	</MudStack>
+
+</MudStack>
+
+
+@code {
+	[Parameter]
+	public string Name { get; set; }
+
+	private Monkey Monkey { get; set; } = new();
+
+	private static int ImageHeight
+	{
+		get
+		{
+			if (DeviceInfo.Platform == DevicePlatform.WinUI)
+			{
+				return 200;
+			}
+
+			return 100;
+		}
+	}
+
+	protected override void OnInitialized()
+	{
+		Monkey = monkeyService.GetMonkey(Name);
+	}
+
+	private void AddRating()
+	{
+		((Application)App).Windows[0].Page.Navigation.PushAsync(new RatingsPage());
+	}
+
+}
+
+<style>
+	.scalable-button {  
+    transition: transform 0.1s ease;  
+}  
+
+.scalable-button:active {  
+    transform: scale(0.95);  
+}
+</style>

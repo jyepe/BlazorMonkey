@@ -21,5 +21,10 @@
 
             return _monkeys;
         }
+
+        public Monkey GetMonkey(string name)
+        {
+            return _monkeys.First(x => x.Name == name);
+        }
     }
 }
